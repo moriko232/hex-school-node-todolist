@@ -81,6 +81,13 @@ const requertListener = (req, res) => {
     if (index !== -1) {
       todos.splice(index, 1);
 
+      res.writeHead(200, headers);
+      res.write(
+        JSON.stringify({
+          status: "success",
+          data: todos,
+        })
+      );
       res.end();
     } else {
       errorHandler(res, "找不到該項目");
