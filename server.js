@@ -4,14 +4,13 @@ const { v4: uuidv4 } = require("uuid");
 const errorHandler = require("./errorHandler");
 
 // 紀錄todo資料arr
-let todos = [{ title: "test", id: "123" }];
+let todos = [];
 
 // settings
 const hostName = "localhost";
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 const requertListener = (req, res) => {
-  // console.log("req", req);
   let body = "";
 
   // 持續接收
@@ -111,7 +110,7 @@ const requertListener = (req, res) => {
           );
           res.end();
         } else {
-          errorHandler(res, "格式錯誤1");
+          errorHandler(res, "格式錯誤或無該筆資料");
         }
       } catch (error) {
         console.log("req error", error);
