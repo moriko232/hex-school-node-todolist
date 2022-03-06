@@ -6,10 +6,6 @@ const errorHandler = require("./errorHandler");
 // 紀錄todo資料arr
 let todos = [];
 
-// settings
-const hostName = "localhost";
-const port = process.env.PORT || 8080;
-
 const requertListener = (req, res) => {
   let body = "";
 
@@ -135,4 +131,4 @@ const requertListener = (req, res) => {
 };
 const server = http.createServer(requertListener);
 
-server.listen(port, hostName);
+server.listen(process.env.PORT || 8080);
