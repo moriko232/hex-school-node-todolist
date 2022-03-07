@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "01b735fa-52cd-49b1-b867-0cd807bfc8f9",
+		"name": "todolist - heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "取得所有代辦事項",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://obscure-lake-31956.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"obscure-lake-31956",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增代辦事項",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"代辦事項1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://obscure-lake-31956.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"obscure-lake-31956",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除所有代辦事項",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://obscure-lake-31956.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"obscure-lake-31956",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除一筆代辦事項",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://obscure-lake-31956.herokuapp.com/todos/ee3024db-87e6-4796-94f2-bf1f4c38778b",
+					"protocol": "https",
+					"host": [
+						"obscure-lake-31956",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos",
+						"ee3024db-87e6-4796-94f2-bf1f4c38778b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "編輯一筆代辦事項",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"代辦事項345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://obscure-lake-31956.herokuapp.com/todos/123",
+					"protocol": "https",
+					"host": [
+						"obscure-lake-31956",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos",
+						"123"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
