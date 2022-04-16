@@ -1,9 +1,20 @@
 // http 為 node.js內建工具
 const http = require("http");
+const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const errorHandler = require("./errorHandler");
 const successHandler = require("./successHandler");
 const headers = require("./headerSetting.js");
+
+// 連接資料庫
+mongoose
+  .connect("mongodb://localhost:27017/hotel")
+  .then(() => {
+    console.log("資料庫連線成功");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 // 紀錄todo資料arr
 let todos = [];
