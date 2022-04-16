@@ -16,6 +16,37 @@ mongoose
     console.log(error);
   });
 
+const roomSchema = new mongoose.Schema(
+  {
+    name: String,
+    price: {
+      type: Number,
+      require: [true, "價格必填"],
+    },
+    rating: Number,
+    createAt: {
+      type: Date,
+      default: Date.now,
+      select: false,
+    },
+  },
+  { versionKey: false }
+);
+const Room = new mongoose.model("room", roomSchema);
+const testRoom = new Room({
+  name: "單人房2",
+  price: 300,
+  rating: 1.0,
+});
+testRoom
+  .save()
+  .then(() => {
+    console.log("新增成功");
+  })
+  .catch((err) => {
+    console.log(error);
+  });
+
 // 紀錄todo資料arr
 let todos = [];
 
