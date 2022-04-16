@@ -1,18 +1,26 @@
 // http 為 node.js內建工具
 const http = require("http");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
+console.log(process.env);
+
 const { v4: uuidv4 } = require("uuid");
 const errorHandler = require("./errorHandler");
 const successHandler = require("./successHandler");
 const headers = require("./headerSetting.js");
 
+const DB = process.env.DATABASE.replace("<password>", process.env.DB_PASSEORD);
+
 // 連接資料庫
 mongoose
-  .connect("mongodb://localhost:27017/hotel")
+  // .connect("mongodb://localhost:27017/hotel")
+  .connect(DB)
   .then(() => {
     console.log("資料庫連線成功");
   })
   .catch((error) => {
+    console.log("連線失敗");
     console.log(error);
   });
 
@@ -34,7 +42,7 @@ const roomSchema = new mongoose.Schema(
 );
 const Room = new mongoose.model("room", roomSchema);
 const testRoom = new Room({
-  name: "單人房2",
+  name: "單人房3",
   price: 300,
   rating: 1.0,
 });
