@@ -1,16 +1,16 @@
 // http 為 node.js內建工具
 const http = require("http");
 const mongoose = require("mongoose");
+
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
-console.log(process.env);
+const DB = process.env.DATABASE.replace("<password>", process.env.DB_PASSEORD);
 
 const { v4: uuidv4 } = require("uuid");
 const errorHandler = require("./errorHandler");
 const successHandler = require("./successHandler");
 const headers = require("./headerSetting.js");
-
-const DB = process.env.DATABASE.replace("<password>", process.env.DB_PASSEORD);
+const Room = require("./model/room.js");
 
 // 連接資料庫
 mongoose
@@ -24,36 +24,41 @@ mongoose
     console.log(error);
   });
 
-const roomSchema = new mongoose.Schema(
-  {
-    name: String,
-    price: {
-      type: Number,
-      require: [true, "價格必填"],
-    },
-    rating: Number,
-    createAt: {
-      type: Date,
-      default: Date.now,
-      select: false,
-    },
-  },
-  { versionKey: false }
-);
-const Room = new mongoose.model("room", roomSchema);
-const testRoom = new Room({
-  name: "單人房3",
-  price: 300,
-  rating: 1.0,
-});
-testRoom
-  .save()
-  .then(() => {
-    console.log("新增成功");
-  })
-  .catch((err) => {
-    console.log(error);
-  });
+async function allData() {
+  const data = await Room.find();
+  console.log("allData", data);
+}
+allData();
+const init = async () => {
+  const data = await Room.find();
+  console.log("allData", data);
+};
+
+// const testRoom = new Room({
+//   name: "單人房3",
+//   rating: 1.0,
+// });
+// testRoom
+//   .save()
+//   .then(() => {
+//     console.log("新增成功");
+//   })
+//   .catch((err) => {
+//     console.log(error);
+//   });
+
+// Room.create({
+//   name: "單人房1",
+//   price: 100,
+//   rating: 1.0,
+// })
+//   .then(() => {
+//     console.log("新增成功");
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// const rooms = Room.find({});
 
 // 紀錄todo資料arr
 let todos = [];
@@ -67,6 +72,7 @@ const requertListener = (req, res) => {
   });
 
   if (req.url === "/todos" && req.method === "GET") {
+    const todos = Room.find({});
     successHandler(res, todos);
   } else if (req.url === "/todos" && req.method === "POST") {
     // 接收完畢
