@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "01b735fa-52cd-49b1-b867-0cd807bfc8f9",
-		"name": "todolist - heroku",
+		"_postman_id": "ea624ab6-2338-45fd-888a-396da24678dd",
+		"name": "todolist - heroku (week2)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,10 +11,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://obscure-lake-31956.herokuapp.com/todos",
+					"raw": "https://mighty-eyrie-37267.herokuapp.com/todos",
 					"protocol": "https",
 					"host": [
-						"obscure-lake-31956",
+						"mighty-eyrie-37267",
 						"herokuapp",
 						"com"
 					],
@@ -40,10 +40,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://obscure-lake-31956.herokuapp.com/todos",
+					"raw": "https://mighty-eyrie-37267.herokuapp.com/todos",
 					"protocol": "https",
 					"host": [
-						"obscure-lake-31956",
+						"mighty-eyrie-37267",
 						"herokuapp",
 						"com"
 					],
@@ -69,10 +69,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://obscure-lake-31956.herokuapp.com/todos",
+					"raw": "https://mighty-eyrie-37267.herokuapp.com/todos",
 					"protocol": "https",
 					"host": [
-						"obscure-lake-31956",
+						"mighty-eyrie-37267",
 						"herokuapp",
 						"com"
 					],
@@ -98,10 +98,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://obscure-lake-31956.herokuapp.com/todos/ee3024db-87e6-4796-94f2-bf1f4c38778b",
+					"raw": "https://mighty-eyrie-37267.herokuapp.com/todos/ee3024db-87e6-4796-94f2-bf1f4c38778b",
 					"protocol": "https",
 					"host": [
-						"obscure-lake-31956",
+						"mighty-eyrie-37267",
 						"herokuapp",
 						"com"
 					],
@@ -128,10 +128,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://obscure-lake-31956.herokuapp.com/todos/123",
+					"raw": "https://mighty-eyrie-37267.herokuapp.com/todos/123",
 					"protocol": "https",
 					"host": [
-						"obscure-lake-31956",
+						"mighty-eyrie-37267",
 						"herokuapp",
 						"com"
 					],
