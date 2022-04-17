@@ -6,15 +6,13 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 const DB = process.env.DATABASE.replace("<password>", process.env.DB_PASSEORD);
 
-const { v4: uuidv4 } = require("uuid");
 const errorHandler = require("./errorHandler");
 const successHandler = require("./successHandler");
 const headers = require("./headerSetting.js");
-const Room = require("./model/room.js");
+const Post = require("./model/post.js");
 
 // 連接資料庫
 mongoose
-  // .connect("mongodb://localhost:27017/hotel")
   .connect(DB)
   .then(() => {
     console.log("資料庫連線成功");
@@ -24,46 +22,7 @@ mongoose
     console.log(error);
   });
 
-async function allData() {
-  const data = await Room.find();
-  console.log("allData", data);
-}
-allData();
-const init = async () => {
-  const data = await Room.find();
-  console.log("allData", data);
-};
-
-// const testRoom = new Room({
-//   name: "單人房3",
-//   rating: 1.0,
-// });
-// testRoom
-//   .save()
-//   .then(() => {
-//     console.log("新增成功");
-//   })
-//   .catch((err) => {
-//     console.log(error);
-//   });
-
-// Room.create({
-//   name: "單人房1",
-//   price: 100,
-//   rating: 1.0,
-// })
-//   .then(() => {
-//     console.log("新增成功");
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-// const rooms = Room.find({});
-
-// 紀錄todo資料arr
-let todos = [];
-
-const requertListener = (req, res) => {
+const requertListener = async (req, res) => {
   let body = "";
 
   // 持續接收
@@ -72,59 +31,67 @@ const requertListener = (req, res) => {
   });
 
   if (req.url === "/todos" && req.method === "GET") {
-    const todos = Room.find({});
-    successHandler(res, todos);
+    const allData = await Post.find();
+    successHandler(res, allData);
   } else if (req.url === "/todos" && req.method === "POST") {
     // 接收完畢
-    req.on("end", () => {
+    req.on("end", async () => {
       try {
         const data = JSON.parse(body);
         if (data.title !== undefined) {
-          const todo = {
+          const post = {
             title: data.title,
-            id: uuidv4(),
           };
-          todos.push(todo);
-          successHandler(res, todos);
+          await Post.create(post).then(async () => {
+            const allData = await Post.find();
+            successHandler(res, allData);
+          });
         } else {
           errorHandler(res, "POST title未填寫");
         }
       } catch (error) {
         console.log("req error", error);
-        errorHandler(res, "POST 格式錯誤");
+        errorHandler(res, `POST 格式錯誤，${error}`);
       }
     });
   } else if (req.url === "/todos" && req.method === "DELETE") {
-    todos = [];
-    successHandler(res, todos);
+    await Post.deleteMany({})
+      .then(async () => {
+        const allData = await Post.find();
+        successHandler(res, allData);
+      })
+      .catch((error) => {
+        errorHandler(res, error);
+      });
   } else if (req.url.startsWith("/todos/") && req.method === "DELETE") {
     const id = req.url.split("/").pop();
-    const index = todos.findIndex((todo) => {
-      return todo.id === id;
-    });
-    if (index !== -1) {
-      todos.splice(index, 1);
-      successHandler(res, todos);
-    } else {
-      errorHandler(res, "找不到該項目");
-    }
+    await Post.findByIdAndDelete(id)
+      .then(async () => {
+        const allData = await Post.find();
+        successHandler(res, allData);
+      })
+      .catch(() => {
+        errorHandler(res, error);
+      });
   } else if (req.url.startsWith("/todos/") && req.method === "PATCH") {
-    req.on("end", () => {
+    req.on("end", async () => {
       try {
         const data = JSON.parse(body);
         const id = req.url.split("/").pop();
-        const index = todos.findIndex((todo) => {
-          return todo.id === id;
-        });
-        if (data.title !== undefined && index !== -1) {
-          todos[index].title = data.title;
 
-          successHandler(res, todos);
+        if (data.title !== undefined) {
+          await Post.findByIdAndUpdate(id, { title: data.title })
+            .then(async () => {
+              const allData = await Post.find();
+              successHandler(res, allData);
+            })
+            .catch(() => {
+              errorHandler(res, error);
+            });
         } else {
           errorHandler(res, "格式錯誤或無該筆資料");
         }
       } catch (error) {
-        // console.log("req error", error);
         errorHandler(res, "格式錯誤");
       }
     });
@@ -134,7 +101,6 @@ const requertListener = (req, res) => {
     res.end();
   } else {
     res.writeHead(404, headers);
-    // res.write("not found 404"); // 簡單文字寫法
     res.write(
       JSON.stringify({
         status: "fail",
