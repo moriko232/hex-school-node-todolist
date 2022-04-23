@@ -30,17 +30,22 @@ const requertListener = async (req, res) => {
     body += chunk;
   });
 
-  if (req.url === "/todos" && req.method === "GET") {
+  if (req.url === "/posts" && req.method === "GET") {
     const allData = await Post.find();
     successHandler(res, allData);
-  } else if (req.url === "/todos" && req.method === "POST") {
+  } else if (req.url === "/posts" && req.method === "POST") {
     // 接收完畢
     req.on("end", async () => {
       try {
         const data = JSON.parse(body);
+
         if (data.title !== undefined) {
           const post = {
+            tag: data.tag,
+            userName: data.userName,
             title: data.title,
+            content: data.content,
+            imgUrl: data.imgUrl,
           };
           await Post.create(post).then(async () => {
             const allData = await Post.find();
@@ -54,7 +59,7 @@ const requertListener = async (req, res) => {
         errorHandler(res, `POST 格式錯誤，${error}`);
       }
     });
-  } else if (req.url === "/todos" && req.method === "DELETE") {
+  } else if (req.url === "/posts" && req.method === "DELETE") {
     await Post.deleteMany({})
       .then(async () => {
         const allData = await Post.find();
@@ -63,7 +68,7 @@ const requertListener = async (req, res) => {
       .catch((error) => {
         errorHandler(res, error);
       });
-  } else if (req.url.startsWith("/todos/") && req.method === "DELETE") {
+  } else if (req.url.startsWith("/posts/") && req.method === "DELETE") {
     const id = req.url.split("/").pop();
     await Post.findByIdAndDelete(id)
       .then(async () => {
@@ -73,14 +78,21 @@ const requertListener = async (req, res) => {
       .catch(() => {
         errorHandler(res, error);
       });
-  } else if (req.url.startsWith("/todos/") && req.method === "PATCH") {
+  } else if (req.url.startsWith("/posts/") && req.method === "PATCH") {
     req.on("end", async () => {
       try {
         const data = JSON.parse(body);
         const id = req.url.split("/").pop();
 
         if (data.title !== undefined) {
-          await Post.findByIdAndUpdate(id, { title: data.title })
+          const post = {
+            tag: data.tag,
+            userName: data.userName,
+            title: data.title,
+            content: data.content,
+            imgUrl: data.imgUrl,
+          };
+          await Post.findByIdAndUpdate(id, post)
             .then(async () => {
               const allData = await Post.find();
               successHandler(res, allData);
